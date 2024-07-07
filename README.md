@@ -1,2 +1,4 @@
-Web app for final project of Harvard's CS50 course.
+# TREFLOYNE
+#### Video Demo: 
+#### Description: I have created a web application to help me keep track of my golf statistics when playing at my locak course - Trefloyne GC.
 
