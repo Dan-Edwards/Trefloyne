@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        {% load static %}
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="{% static 'stats/css/custom.css' %}"/>
+        <link rel="stylesheet" href="{% static 'stats/css/addon.css' %}"/>
+        <script src="{% static 'stats/js/bootstrap.bundle.min.js' %}"></script>
+        <title>Trefloyne Stats: {% block title %}{% endblock %}</title>
+    </head>
+
+    <body class="pt-4 bg-secondary m-3">
+        <nav class="navbar fixed-top navbar-expand-md bg-body-tertiary border-bottom border-body" data-bs-theme="dark">
+            <div class="container-fluid">
+                <a href="/" class="navbar-brand">Trefloyne Statistics</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarmain" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>              
+                <div class="collapse navbar-collapse justify-content-end align-center" id="navbarmain">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'index' %}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'about' %}">About</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Score Entry
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'round_entry' %}">18 Holes</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'front_9' %}">Front 9</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'back_9' %}">Back 9</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="container-fluid navbar-nav me-auto mb-2 mb-lg-0 justify-content-end">
+                        <a href="{% url 'login' %}">
+                            <button class="btn btn-sm btn-outline-secondary" type="button">LOGIN</button>
+                        </a>
+                        <a href="{% url 'register' %}">
+                            <button class="btn btn-sm btn-outline-secondary" type="button">REGISTER</button>
+                        </a>
+                    </ul> 
+                </div>           
+            </div>
+        </nav>
+        <br>
+        <div class="border-top border-bottom rounded border-3 text-center display-2 m-1" id="heading">
+            {% block heading %}{% endblock %}
+        </div>
+        <div id="content">
+            {% block content %}{% endblock %}
+        </div>
+        <br>
+        <footer>
+            <p>&copy; Dan Edwards 2024</p>
+        </footer>
+    </body>
+</html>

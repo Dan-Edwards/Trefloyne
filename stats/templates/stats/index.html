@@ -1,0 +1,28 @@
+{% extends "stats/layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block heading %}
+    HOME PAGE
+{% endblock %}
+
+
+{% block content %}
+    <div>
+        <h2>
+            Home Page
+        </h2>
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <p>
+            Hello there!
+        </p>
+    </div>
+{% endblock %}
