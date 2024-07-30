@@ -1,10 +1,10 @@
 {% extends "stats/layout.html" %}
 
-{% load crispy_forms_tags %}
-
 {% block title %}
     Login
 {% endblock %}
+
+{% load crispy_forms_tags %}
 
 {% block heading %}
     LOGIN
@@ -12,20 +12,25 @@
 
 
 {% block content %}
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-4">
-            <div class="text-center mb-4">
-                <h2>
-                    Hello, login
-                </h2>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="text-center mb-4">
+                    <h2>
+                        Hello, login
+                    </h2>
+                </div>
+                <form method="POST" action="{% url 'login' %}">
+                        {% csrf_token %}
+                    <div class="mb-3">
+                      <input type="text" class="form-control" name="username" placeholder="Enter your username">
+                    </div>
+                    <div class="mb-3">
+                      <input type="password" class="form-control" name="password" placeholder="Enter your password">
+                    </div>
+                    <button type="submit" class="btn btn-secondary">Login</button>
+                </form>
             </div>
-            <form method="post" class="form">
-                {% csrf_token %}
-                {{ form|crispy }}
-                <button type="submit" class="btn btn-secondary w-100">Login</button>
-            </form>
         </div>
     </div>
-</div>
 {% endblock %}

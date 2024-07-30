@@ -40,6 +40,13 @@
                             </ul>
                         </li>
                     </ul>
+                {% if user.is_authenticated %}
+                    <ul class="container-fluid navbar-nav me-auto mb-2 mb-lg-0 justify-content-end">
+                        <a href="{% url 'logout' %}">
+                            <button class="btn btn-sm btn-outline-secondary" type="button">LOGOUT</button>
+                        </a>
+                    </ul>
+                {% else %}
                     <ul class="container-fluid navbar-nav me-auto mb-2 mb-lg-0 justify-content-end">
                         <a href="{% url 'login' %}">
                             <button class="btn btn-sm btn-outline-secondary" type="button">LOGIN</button>
@@ -47,10 +54,19 @@
                         <a href="{% url 'register' %}">
                             <button class="btn btn-sm btn-outline-secondary" type="button">REGISTER</button>
                         </a>
-                    </ul> 
+                    </ul>
+                {% endif %}
                 </div>           
             </div>
         </nav>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
         <br>
         <div class="border-top border-bottom rounded border-3 text-center display-2 m-1" id="heading">
             {% block heading %}{% endblock %}

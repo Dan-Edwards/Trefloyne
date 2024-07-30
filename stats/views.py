@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.utils.timezone import datetime
 from django.conf import settings
 from django.contrib import auth, messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, logout, login
 from django.core.mail import send_mail
 from .forms import RegisterForm, LogInForm
 
@@ -12,7 +12,7 @@ from .forms import RegisterForm, LogInForm
 def index(request):
         return render(request, 'stats/index.html')
 
-def login(request):
+def login_user(request):
         
         if request.method == "POST":
                 username = request.POST.get('username')
@@ -21,14 +21,22 @@ def login(request):
 
                 if user is not None:
                         auth.login(request, user)
-                        return redirect('stats/index.html')
+                        messages.success(request, ("You have been successfully logged in!"))
+                        return redirect('index') 
                 
                 else:
                         messages.error(request, 'Unable to login, wrong username or password.')
+                        return redirect('stats/registration/login.html')
 
         else:
                 form = LogInForm()
-                return render(request, 'stats/registration/login.html')
+        
+        return render(request, 'stats/registration/login.html', {"form":form})
+
+def logout_user(request):
+        logout(request)
+        messages.success(request, ("You have been successfully logged out!"))
+        return redirect('index')
 
 
 def user_register(request):
@@ -49,8 +57,6 @@ def user_register(request):
         
         return render(request, 'stats/registration/register.html', {"form":form})
 
-def user_logout(request):
-        return render(request, 'stats/registration/logout.html')
 
 def name(request, name):
         print(request.build_absolute_uri()) #optional
