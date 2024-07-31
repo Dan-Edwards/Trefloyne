@@ -1,5 +1,7 @@
 {% extends "stats/layout.html" %}
 
+{% load crispy_forms_tags %}
+
 {% block title %}
     Round Entry
 {% endblock %}
@@ -14,5 +16,49 @@
         <p>
             Enter round here
         </p>
+        <div class="container">
+            <form method="POST">
+                {% csrf_token %}
+                {{ round_form|crispy }}
+                {{ hole_formset.management_form }}
+
+                {% for form in hole_formset %}
+                <br>
+                    {{ form.non_field_errors }}
+                        <div class="form-group col-md-5>
+                            <label for="hole_number">HOLE</label>
+                            <input type="text" id="hole_number" value="{{ form.hole_number.value }}" readonly class="form-control">
+                            {{ form.hole_par|as_crispy_field }}
+                            {{ form.score|as_crispy_field }}
+                            {{ form.fairway|as_crispy_field }}
+                            {{ form.gir|as_crispy_field }}
+                            {{ form.putts|as_crispy_field }}
+                        </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
     </div>
+
+    <script>
+        $(document).ready(function() {
+            function toggleFairwayFields() {
+                $('[name$="-hole_par"]').each(function() {
+                    var holePar = $(this).val();
+                    var fairwayField = $(this).closest('.form-row').find('[name$="-fairway"]').closest('.form-group');
+                    if (holePar == '3') {
+                        fairwayField.hide();
+                    } else {
+                        fairwayField.show();
+                    }
+                });
+            }
+
+            toggleFairwayFields();
+
+            $('[name$="-hole_par"]').change(function() {
+                toggleFairwayFields();
+            });
+        });
+    </script>
 {% endblock %}
