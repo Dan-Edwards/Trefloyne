@@ -40,3 +40,7 @@ class HoleForm(forms.ModelForm):
 
 HoleFormSet = modelformset_factory(HoleModel, form=HoleForm, extra=18)
 
+HoleFront9FormSet = modelformset_factory(HoleModel, form=HoleForm, extra=9)
+
+HoleBack9FormSet = modelformset_factory(HoleModel, form=HoleForm, extra=9)
+

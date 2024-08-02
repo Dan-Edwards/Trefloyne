@@ -3,8 +3,9 @@ from django.utils.timezone import datetime
 from django.conf import settings
 from django.contrib import auth, messages
 from django.contrib.auth import authenticate, logout, login
+from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
-from .forms import RegisterForm, LogInForm, RoundForm, HoleForm, HoleFormSet
+from .forms import RegisterForm, LogInForm, RoundForm, HoleForm, HoleFormSet, HoleFront9FormSet, HoleBack9FormSet
 from .models import RoundModel, HoleModel
 
 
@@ -76,6 +77,7 @@ def about(request):
         return render(request, 'stats/about.html')
 
 
+@login_required(login_url='/registration/login')
 def round_entry(request):
         if request.method == 'POST':
                 round_form = RoundForm(request.POST)
@@ -83,6 +85,9 @@ def round_entry(request):
 
                 if round_form.is_valid() and hole_formset.is_valid():
                         round = round_form.save()
+                        round.is_18_holes = True
+                        round.user = request.user
+                        round.save()
 
                         for form in hole_formset:
                                 hole = form.save(commit=False)
@@ -101,9 +106,63 @@ def round_entry(request):
         return render(request, 'stats/round_entry.html', {'round_form': round_form, 'hole_formset': hole_formset,})
 
 
+@login_required(login_url='/registration/login')
 def front_9(request):
-        return render(request, 'stats/front_9_entry.html')
+        if request.method == "POST":
+                round_form = RoundForm(request.POST)
+                hole_formset = HoleFormSet(request.POST, queryset=HoleModel.objects.none())
+
+                if round_form.is_valid() and hole_formset.is_valid():
+                        round = round_form.save(commit=False)
+                        round.is_18_holes = False
+                        round.user = request.user
+                        round.save()
+
+                        for form in hole_formset:
+                                hole = form.save(commit=False)
+                                hole.round = round
+                                hole.save()
+                        
+                        return redirect('index')
+                
+                else:
+                        print(round_form.errors)
+                        print(hole_formset.errors)
+
+        else:
+                round_form = RoundForm()
+                hole_formset = HoleFront9FormSet(queryset=HoleModel.objects.none())
+
+                for i, form in enumerate(hole_formset.forms):
+                        form.initial['hole_number'] = i + 1
+
+        return render(request, 'stats/front_9_entry.html', {'round_form': round_form, 'hole_formset': hole_formset,})
 
 
+@login_required(login_url='/registration/login')
 def back_9(request):
-        return render(request, 'stats/back_9_entry.html')
+        if request.method == "POST":
+                round_form = RoundForm(request.POST)
+                hole_formset = HoleFormSet(request.POST, queryset=HoleModel.objects.none())
+
+                if round_form.is_valid() and hole_formset.is_valid():
+                        round = round_form.save()
+                        round.is_18_holes = False
+                        round.user = request.user
+                        round.save()
+
+                        for form in hole_formset:
+                                hole = form.save(commit=False)
+                                hole.round = round
+                                hole.save()
+                        
+                        return redirect('stats/index.html')
+        
+        else:
+                round_form = RoundForm
+                hole_formset = HoleBack9FormSet(queryset=HoleModel.objects.none())
+
+                for i, form in enumerate(hole_formset.forms, start= 9):
+                        form.initial['hole_number'] = i + 1
+
+        return render(request, 'stats/back_9_entry.html', {'round_form': round_form, 'hole_formset': hole_formset,})

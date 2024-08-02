@@ -50,20 +50,23 @@
                         {% endif %}
                     </ul>
                 {% if user.is_authenticated %}
-                    <ul class="container-fluid navbar-nav me-auto mb-2 mb-lg-0 justify-content-end">
-                        <form action="{% url 'logout' %}" method="POST">
-                            {% csrf_token %}
-                            <button class="btn btn-sm btn-outline-secondary" type="submit">LOGOUT</button>
-                    </ul>
+                    <form action="{% url 'logout' %}" method="POST">
+                        <ul class="container-fluid navbar-nav me-auto mb-2 mb-lg-0 justify-content-end">
+                                {% csrf_token %}
+                                <button class="btn btn-sm btn-outline-secondary" type="submit">LOGOUT</button>
+                        </ul>
+                    </form>
                 {% else %}
-                    <ul class="container-fluid navbar-nav me-auto mb-2 mb-lg-0 justify-content-end">
-                        <a href="{% url 'login' %}">
-                            <button class="btn btn-sm btn-outline-secondary" type="button">LOGIN</button>
-                        </a>
-                        <a href="{% url 'register' %}">
-                            <button class="btn btn-sm btn-outline-secondary" type="button">REGISTER</button>
-                        </a>
-                    </ul>
+                    <form>
+                        <ul class="container-fluid navbar-nav me-auto mb-2 mb-lg-0 justify-content-end">
+                            <a href="{% url 'login' %}">
+                                <button class="btn btn-sm btn-outline-secondary" type="button">LOGIN</button>
+                            </a>
+                            <a href="{% url 'register' %}">
+                                <button class="btn btn-sm btn-outline-secondary" type="button">REGISTER</button>
+                            </a>
+                        </ul>
+                    </form>
                 {% endif %}
                 </div>           
             </div>

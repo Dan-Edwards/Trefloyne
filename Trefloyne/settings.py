@@ -132,6 +132,7 @@ STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'static_collected'
 
 # Login/Logout Redirect Route
+LOGIN_URL = '/registration/login'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 

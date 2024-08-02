@@ -23,6 +23,7 @@ class RoundModel(models.Model):
     date = models.DateField(default=now)
     course_name = models.CharField(max_length=50)
     tees = models.CharField(max_length=6, choices=TEES_CHOICES, default='yellow')
+    is_18_holes = models.BooleanField(default=True)
 
     def __str__(self):
         return f"{self.course_name} on {self.date}"
@@ -31,7 +32,7 @@ class RoundModel(models.Model):
 # Declare new model for holes
 class HoleModel(models.Model):
     round = models.ForeignKey(RoundModel, on_delete=models.CASCADE, related_name='holes')
-    hole_number = models.IntegerField(max_length=2)
+    hole_number = models.IntegerField(max_length=2,)
     hole_par = models.IntegerField(choices=PAR_CHOICES, default='4')
     score = models.IntegerField(max_length=2)
     fairway = models.BooleanField()
