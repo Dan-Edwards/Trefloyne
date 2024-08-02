@@ -24,6 +24,11 @@ class RoundModel(models.Model):
     course_name = models.CharField(max_length=50)
     tees = models.CharField(max_length=6, choices=TEES_CHOICES, default='yellow')
     is_18_holes = models.BooleanField(default=True)
+    is_front_9  = models.BooleanField(default=False)
+    score = models.IntegerField(default=0)
+    fairways = models.IntegerField(default=0)
+    greens = models.IntegerField(default=0)
+    putts = models.IntegerField(default=0)
 
     def __str__(self):
         return f"{self.course_name} on {self.date}"

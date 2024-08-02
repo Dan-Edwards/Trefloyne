@@ -84,15 +84,30 @@ def round_entry(request):
                 hole_formset = HoleFormSet(request.POST, queryset=HoleModel.objects.none())
 
                 if round_form.is_valid() and hole_formset.is_valid():
-                        round = round_form.save()
-                        round.is_18_holes = True
+                        round = round_form.save(commit=False)
                         round.user = request.user
+                        round.is_18_holes = True
+                        round.is_front_9 = False
+                        total_score = 0
+                        total_fairways = 0
+                        total_greens = 0
+                        total_putts = 0
                         round.save()
 
                         for form in hole_formset:
                                 hole = form.save(commit=False)
                                 hole.round = round
+                                total_score += hole.score
+                                total_fairways += hole.fairway
+                                total_greens += hole.gir
+                                total_putts += hole.putts
                                 hole.save()
+                        
+                        round.score = total_score
+                        round.fairways = total_fairways
+                        round.greens = total_greens
+                        round.putts = total_putts
+                        round.save()
                         
                         return redirect('index')
 
@@ -114,14 +129,29 @@ def front_9(request):
 
                 if round_form.is_valid() and hole_formset.is_valid():
                         round = round_form.save(commit=False)
-                        round.is_18_holes = False
                         round.user = request.user
+                        round.is_18_holes = False
+                        round.is_front_9 = True
+                        total_score = 0
+                        total_fairways = 0
+                        total_greens = 0
+                        total_putts = 0
                         round.save()
-
+                        
                         for form in hole_formset:
                                 hole = form.save(commit=False)
                                 hole.round = round
+                                total_score += hole.score
+                                total_fairways += hole.fairway
+                                total_greens += hole.gir
+                                total_putts += hole.putts
                                 hole.save()
+                        
+                        round.score = total_score
+                        round.fairways = total_fairways
+                        round.greens = total_greens
+                        round.putts = total_putts
+                        round.save()
                         
                         return redirect('index')
                 
@@ -146,17 +176,32 @@ def back_9(request):
                 hole_formset = HoleFormSet(request.POST, queryset=HoleModel.objects.none())
 
                 if round_form.is_valid() and hole_formset.is_valid():
-                        round = round_form.save()
-                        round.is_18_holes = False
+                        round = round_form.save(commit=False)
                         round.user = request.user
+                        round.is_18_holes = False
+                        round.is_front_9 = False
+                        total_score = 0
+                        total_fairways = 0
+                        total_greens = 0
+                        total_putts = 0
                         round.save()
-
+                
                         for form in hole_formset:
                                 hole = form.save(commit=False)
                                 hole.round = round
+                                total_score += hole.score
+                                total_fairways += hole.fairway
+                                total_greens += hole.gir
+                                total_putts += hole.putts
                                 hole.save()
                         
-                        return redirect('stats/index.html')
+                        round.score = total_score
+                        round.fairways = total_fairways
+                        round.greens = total_greens
+                        round.putts = total_putts
+                        round.save()
+                        
+                        return redirect('index')
         
         else:
                 round_form = RoundForm

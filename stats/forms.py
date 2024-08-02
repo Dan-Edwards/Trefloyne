@@ -36,6 +36,9 @@ class HoleForm(forms.ModelForm):
     class Meta:
         model = HoleModel
         fields = ['hole_number', 'hole_par', 'score', 'fairway', 'gir', 'putts']
+        widgets = {
+            'hole_number': forms.HiddenInput(),
+        }
 
 
 HoleFormSet = modelformset_factory(HoleModel, form=HoleForm, extra=18)

@@ -28,6 +28,7 @@
                         <div class="col-md-5>
                             <label for="hole_number">HOLE</label>
                             <input type="text" id="hole_number" value="{{ form.hole_number.value }}" readonly class="form-control">
+                            {{ form.hole_number }}
                             {{ form.hole_par|as_crispy_field }}
                             {{ form.score|as_crispy_field }}
                             {{ form.fairway|as_crispy_field }}
