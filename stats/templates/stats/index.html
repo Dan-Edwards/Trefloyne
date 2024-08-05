@@ -14,15 +14,12 @@
         <h2>
             Home Page
         </h2>
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        <p>
-            Hello there!
-        </p>
     </div>
+    {% if chart %}
+        <div>{{ chart|safe }}</div>
+    {% else %}
+        <p>{{ message }}</p>
+    {% endif %}
+
+
 {% endblock %}

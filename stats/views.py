@@ -4,15 +4,36 @@ from django.conf import settings
 from django.contrib import auth, messages
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail
+import pandas as pd
+import plotly.express as px
+from plotly.offline import plot
 from .forms import RegisterForm, LogInForm, RoundForm, HoleForm, HoleFormSet, HoleFront9FormSet, HoleBack9FormSet
 from .models import RoundModel, HoleModel
 
 
 # Create your views here.
 
+@login_required(login_url='/registration/login')
 def index(request):
-        return render(request, 'stats/index.html')
+        round = RoundModel.objects.filter(user=request.user)
+
+        if round.exists():
+                fig = px.scatter(
+                        x=[r.date for r in round],
+                        y=[r.score for r in round],
+                        title='Scores',
+                        labels={'x': 'Date', 'y': 'Score'}
+                )
+
+                chart = fig.to_html()
+                context = {'chart': chart}
+
+        else:
+                context = {'message': 'Enter some scores to retrieve your data'}
+
+        return render(request, 'stats/index.html', context)
 
 def login_user(request):
         
@@ -23,12 +44,12 @@ def login_user(request):
 
                 if user is not None:
                         auth.login(request, user)
-                        messages.success(request, ("You have been successfully logged in!"))
+                        messages.success(request, (f"Sup, {username}. You have been successfully logged in!"))
                         return redirect('index') 
                 
                 else:
                         messages.error(request, 'Unable to login, wrong username or password.')
-                        return redirect('stats/registration/login.html')
+                        return redirect('index')
 
         else:
                 form = LogInForm()
