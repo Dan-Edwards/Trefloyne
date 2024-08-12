@@ -4,10 +4,10 @@ from django.forms import ModelForm
 from django.utils.timezone import now
 
 # Tee choice
-TEES_CHOICES = [
-    ('red', 'Red'), 
+TEES_CHOICES = [ 
     ('yellow', 'Yellow'), 
     ('white', 'White'),
+    ('red', 'Red'),
 ]
 
 # Par choice

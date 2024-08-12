@@ -1,17 +1,16 @@
 <!DOCTYPE html>
+{% load static %}
 
 <html lang="en">
-
     <head>
-        {% load static %}
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="stylesheet" href="{% static 'stats/css/custom.css' %}"/>
-        <link rel="stylesheet" href="{% static 'stats/css/addon.css' %}"/>
+        <link rel="stylesheet" href="{% static 'stats/css/custom.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'stats/css/addon.css' %}">
+        <link rel="shortcut icon" type="img/png" href="{% static 'stats/img/favicon-16x16.png' %}">
         <script src="{% static 'stats/js/bootstrap.bundle.min.js' %}"></script>
         <title>Trefloyne Stats: {% block title %}{% endblock %}</title>
     </head>
-
     <body class="pt-4 bg-secondary m-3">
         <nav class="navbar fixed-top navbar-expand-md bg-body-tertiary border-bottom border-body" data-bs-theme="dark">
             <div class="container-fluid">
@@ -89,6 +88,7 @@
         <br>
         <footer>
             <p>&copy; Dan Edwards 2024</p>
+            <a href="https://www.flaticon.com/free-icons/golf" title="golf icons">Golf icons created by Dreamstale - Flaticon</a>
         </footer>
     </body>
 </html>

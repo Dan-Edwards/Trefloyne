@@ -1,5 +1,9 @@
 {% extends "stats/layout.html" %}
 
+{% load crispy_forms_tags %}
+
+{% load static %}
+
 {% block title %}
     Home
 {% endblock %}
@@ -10,16 +14,43 @@
 
 
 {% block content %}
-    <div>
-        <h2>
-            Home Page
-        </h2>
+    
+    <div class="container mt-4">
+        <div class="row">
+            <div style="width: 15%;">
+                <form method="get" action="{% url 'index' %}">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit">Update</button>
+                </form>
+            </div>
+            <div class="col-md-4 col-xl-3 offset-md-6">
+                <div class="card bg-c-green order-card">
+                    <div class="card-body">
+                        <h6 class="mb-3">Scoring Avg.</h6>
+                        <h2 class="text-end"><i class="fa fa-rocket f-left"></i><span>{{ scoring_avg|floatformat:1 }}</span></h2>
+                        <p class="mb-0">Total Rounds<span class="f-right">{{ total_rounds }}</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    {% if chart %}
-        <div>{{ chart|safe }}</div>
-    {% else %}
-        <p>{{ message }}</p>
-    {% endif %}
-
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 mb-3">
+                {% if chart %}
+                    <div class="chart-container">{{ chart|safe }}</div>
+                {% else %}
+                    <p>{{ message }}</p>
+                {% endif %}
+            </div>
+            <div class="col-md-6 col-sm-12 mb-3">
+                {% if box_chart %}
+                    <div class="chart-container">{{ box_chart|safe }}</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

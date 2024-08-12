@@ -6,10 +6,11 @@ from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail
+from django.db.models import Avg
 import pandas as pd
 import plotly.express as px
 from plotly.offline import plot
-from .forms import RegisterForm, LogInForm, RoundForm, HoleForm, HoleFormSet, HoleFront9FormSet, HoleBack9FormSet
+from .forms import RegisterForm, LogInForm, RoundForm, HoleForm, HoleFormSet, HoleFront9FormSet, HoleBack9FormSet, RoundToggleForm
 from .models import RoundModel, HoleModel
 
 
@@ -17,26 +18,67 @@ from .models import RoundModel, HoleModel
 
 @login_required(login_url='/registration/login')
 def index(request):
+        round_type = request.GET.get('round_type', 'all')
+        tee_type = request.GET.get('tee_type', 'all')
+
+        form = RoundToggleForm(initial={'round_type': round_type})
         round = RoundModel.objects.filter(user=request.user)
 
+        if round_type == '18':
+                round = round.filter(is_18_holes=True)
+        elif round_type == '9':
+                round = round.filter(is_18_holes=False)
+        
+        if tee_type == 'white':
+                round = round.filter(tees='white')
+        elif tee_type == 'yellow':
+                round = round.filter(tees='yellow')
+        elif tee_type == 'red':
+                round = round.filter(tees='red')
+
         if round.exists():
-                fig = px.scatter(
+                data = {
+                        'Fairways': [r.fairways for r in round],
+                        'GIR': [r.greens for r in round],
+                        'Round': [r.date for r in round],
+                        'Putts': [r.putts for r in round],
+                        'Score': [r.score for r in round],
+                }
+
+                df = pd.DataFrame(data)
+
+                fig = px.scatter(df,
                         x=[r.date for r in round],
-                        y=[r.score for r in round],
+                        y=['Score'],
                         title='Scores',
                         labels={'x': 'Date', 'y': 'Score'}
                 )
 
                 chart = fig.to_html()
-                context = {'chart': chart}
+
+                fig2 = px.box(
+                        df.melt(id_vars=['Round'], value_vars=['Fairways', 'GIR', 'Putts']),
+                        x='variable',
+                        y='value', 
+                        title='Distribution of Fairways, GIR and Putts per Round',
+                        labels={'variable': 'Fairways & Greens', 'value': 'Value'}
+                )
+
+                box_chart = fig2.to_html()
+
+                scoring_avg = round.aggregate(Avg('score', default=0))['score__avg']
+                total_rounds = round.count()
+
+                context = {'chart': chart, 'form': form, 'round_type': round_type, 'tee_type': tee_type, 'box_chart': box_chart, 'scoring_avg': scoring_avg, 'total_rounds': total_rounds,}
+
 
         else:
-                context = {'message': 'Enter some scores to retrieve your data'}
+                context = {'message': 'Enter some scores to retrieve your data', 'form': form, 'round_type': round_type}
 
         return render(request, 'stats/index.html', context)
 
+
 def login_user(request):
-        
         if request.method == "POST":
                 username = request.POST.get('username')
                 password = request.POST.get('password')

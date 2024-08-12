@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm, modelformset_factory
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Field
-from .models import RoundModel, HoleModel
+from .models import RoundModel, HoleModel, TEES_CHOICES
 
 class RegisterForm(UserCreationForm):
     email = forms.EmailField()
@@ -47,3 +47,12 @@ HoleFront9FormSet = modelformset_factory(HoleModel, form=HoleForm, extra=9)
 
 HoleBack9FormSet = modelformset_factory(HoleModel, form=HoleForm, extra=9)
 
+class RoundToggleForm(forms.Form):
+    ROUND_CHOICES = (
+        ('all', 'All Rounds'),
+        ('18', '18 Holes'),
+        ('9', '9 Holes'),
+    )
+
+    round_type = forms.ChoiceField(choices=ROUND_CHOICES, required=False, label="Round Type")
+    tee_type = forms.ChoiceField(choices=TEES_CHOICES, required=False, label="Tees")
