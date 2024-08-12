@@ -4,14 +4,24 @@
     About
 {% endblock %}
 
+{% block heading %}
+    ABOUT
+{% endblock %}
 
 {% block content %}
-    <div>
-        {% block heading %}
-            ABOUT
-        {% endblock %}
-        <p>
-            My golf stats page for Trefloyne
-        </p>
+    <br>
+    <div class="container">
+        <div class="row text-center">
+            <h3>
+                How to Use
+            </h3>
+            <p>
+                Once registered as a user, navigate to a Score Entry page, either 18 Holes, Front 9, or Back 9.<br>
+                From here you can enter the date, course name and selected tees.
+                You will have to enter the hole par which is automatically set to 4 for each hole.<br>
+                For each hole enter your score, select whether or not you hit the fairway and GIR (green in regulation) and also putts.
+            </p>
+        </div>
     </div>
+
 {% endblock %}

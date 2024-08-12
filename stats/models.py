@@ -5,6 +5,7 @@ from django.utils.timezone import now
 
 # Tee choice
 TEES_CHOICES = [ 
+    ('all', 'All Tees'),
     ('yellow', 'Yellow'), 
     ('white', 'White'),
     ('red', 'Red'),

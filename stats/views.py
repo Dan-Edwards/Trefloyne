@@ -29,12 +29,8 @@ def index(request):
         elif round_type == '9':
                 round = round.filter(is_18_holes=False)
         
-        if tee_type == 'white':
-                round = round.filter(tees='white')
-        elif tee_type == 'yellow':
-                round = round.filter(tees='yellow')
-        elif tee_type == 'red':
-                round = round.filter(tees='red')
+        if tee_type != 'all':
+                round = round.filter(tees=tee_type)
 
         if round.exists():
                 data = {
