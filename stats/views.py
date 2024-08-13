@@ -120,18 +120,6 @@ def user_register(request):
         return render(request, 'stats/registration/register.html', {"form":form})
 
 
-def name(request, name):
-        print(request.build_absolute_uri()) #optional
-        return render(
-                request,
-                'stats/name.html',
-                {
-                    'name': name,
-                    'date': datetime.now()
-                }
-            )
-
-
 def about(request):
         return render(request, 'stats/about.html')
 

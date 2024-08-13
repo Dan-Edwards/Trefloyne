@@ -21,15 +21,19 @@
                 <form method="get" action="{% url 'index' %}">
                     {% csrf_token %}
                     {{ form|crispy }}
-                    <button type="submit">Update</button>
+                    <button type="submit" class="btn bg-c-green text-white rounded shadow-sm px-4 py-2">Update</button>
                 </form>
             </div>
             <div class="col-md-4 col-xl-3 offset-md-6">
                 <div class="card bg-c-green order-card">
                     <div class="card-body">
-                        <h6 class="mb-3">Scoring Avg.</h6>
-                        <h2 class="text-end"><i class="fa fa-rocket f-left"></i><span>{{ scoring_avg|floatformat:1 }}</span></h2>
-                        <p class="mb-0">Total Rounds<span class="f-right">{{ total_rounds }}</span></p>
+                        {% if scoring_avg %}
+                            <h6 class="mb-3">Scoring Avg.</h6>
+                            <h2 class="text-end"><i class="fa fa-rocket f-left"></i><span>{{ scoring_avg|floatformat:1 }}</span></h2>
+                            <p class="mb-0">Total Rounds<span class="f-right">{{ total_rounds }}</span></p>
+                        {% else %}
+                            <p>{{message }}</p>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -41,8 +45,6 @@
             <div class="col-md-6 col-sm-12 mb-3">
                 {% if chart %}
                     <div class="chart-container">{{ chart|safe }}</div>
-                {% else %}
-                    <p>{{ message }}</p>
                 {% endif %}
             </div>
             <div class="col-md-6 col-sm-12 mb-3">
