@@ -1,3 +1,6 @@
 .env
 node_modules/
 .venv/
+Trefloyne/__pycache__/
+stats/__pycache__/
+stats/migrations/__pycache__/
